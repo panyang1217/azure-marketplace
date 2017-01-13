@@ -51,7 +51,7 @@
     "subnetRef": "[concat(resourceId(parameters('networkSettings').resourceGroup, 'Microsoft.Network/virtualNetworks', parameters('networkSettings').name), '/subnets/', parameters('networkSettings').subnet.name)]",
     "publicIpName": "[concat(variables('namespace'), '-ip')]",
     "securityGroupName": "[concat(variables('namespace'), '-nsg')]",
-    "storageAccountName": "[concat(variables('namespace'), '-sa-', uniqueString(resourceGroup().id, deployment().name))]",
+    "storageAccountName": "[concat(variables('namespace'), uniqueString(resourceGroup().id, deployment().name))]",
     "nicName": "[concat(variables('namespace'), '-nic')]",
     "password_osProfile": {
       "computername": "[variables('namespace')]",
