@@ -38,7 +38,12 @@
       "No": "empty/empty-jumpbox-resources.json",
       "Yes": "machines/jumpbox-resources.json"
     },
+    "benchmarkTemplates": {
+      "No": "empty/empty-jumpbox-resources.json",
+      "Yes": "machines/benchmark-resources.json"
+    },
     "jumpboxTemplateUrl": "[concat(parameters('templateBaseUrl'), variables('jumpboxTemplates')[parameters('topologySettings').jumpbox])]",
+    "benchmarkTemplateUrl": "[concat(parameters('templateBaseUrl'), variables('benchmarkTemplates')[parameters('topologySettings').benchmark])]",
     "kibanaTemplates": {
       "No": "empty/empty-kibana-resources.json",
       "Yes": "machines/kibana-resources.json"
@@ -152,6 +157,43 @@
       }
     },
     {
+      "name": "benchmark",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-02-01",
+      "dependsOn": [
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('benchmarkTemplateUrl')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "templateBaseUrl": {
+            "value": "[parameters('templateBaseUrl')]"
+          },
+          "storageAccountName": {
+            "value": "[parameters('commonVmSettings').storageAccountName]"
+          },
+          "credentials": {
+            "value": "[parameters('commonVmSettings').credentials]"
+          },
+          "location": {
+            "value": "[parameters('commonVmSettings').location]"
+          },
+          "namespace": {
+            "value": "[concat(parameters('commonVmSettings').namespacePrefix, 'benchmark')]"
+          },
+          "networkSettings": {
+            "value": "[parameters('networkSettings')]"
+          },
+          "osSettings": {
+            "value": "[parameters('osSettings')]"
+          }
+        }
+      }
+    },
+    {
       "name": "jumpbox",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2016-02-01",
@@ -232,6 +274,10 @@
   "outputs": {
     "kibana": {
       "value": "[reference('kibana').outputs.fqdn.value]",
+      "type": "string"
+    },
+    "benchmarkssh": {
+      "value": "[reference('benchmark').outputs.ssh.value]",
       "type": "string"
     },
     "jumpboxssh": {
