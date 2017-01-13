@@ -157,7 +157,7 @@
       "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]",
-        "[concat('Microsoft.Storage/storageAccounts/', variables('storageAcountName'))]"
+        "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
       ],
       "properties": {
         "hardwareProfile": {
@@ -181,7 +181,7 @@
                   "name": "datadisk1",
                   "diskSizeGB": 1023,
                   "lun": 0,
-                  "vhd": { "uri": "[concat('http://',variables('storageAcountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk1' ,'.vhd')]" },
+                  "vhd": { "uri": "[concat('http://',variables('storageAccountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk1' ,'.vhd')]" },
                   "caching": "None",
                   "createOption": "Empty"
               },
@@ -189,7 +189,7 @@
                   "name": "datadisk2",
                   "diskSizeGB": 1023,
                   "lun": 1,
-                  "vhd": { "uri": "[concat('http://',variables('storageAcountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk2' ,'.vhd')]" },
+                  "vhd": { "uri": "[concat('http://',variables('storageAccountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk2' ,'.vhd')]" },
                   "caching": "None",
                   "createOption": "Empty"
               },
@@ -197,7 +197,7 @@
                   "name": "datadisk3",
                   "diskSizeGB": 1023,
                   "lun": 2,
-                  "vhd": { "uri": "[concat('http://',variables('storageAcountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk3' ,'.vhd')]" },
+                  "vhd": { "uri": "[concat('http://',variables('storageAccountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk3' ,'.vhd')]" },
                   "caching": "None",
                   "createOption": "Empty"
               },
@@ -205,7 +205,7 @@
                   "name": "datadisk4",
                   "diskSizeGB": 1023,
                   "lun": 3,
-                  "vhd": { "uri": "[concat('http://',variables('storageAcountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk4' ,'.vhd')]" },
+                  "vhd": { "uri": "[concat('http://',variables('storageAccountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk4' ,'.vhd')]" },
                   "caching": "None",
                   "createOption": "Empty"
               },
@@ -213,7 +213,7 @@
                   "name": "datadisk5",
                   "diskSizeGB": 1023,
                   "lun": 4,
-                  "vhd": { "uri": "[concat('http://',variables('storageAcountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk5' ,'.vhd')]" },
+                  "vhd": { "uri": "[concat('http://',variables('storageAccountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk5' ,'.vhd')]" },
                   "caching": "None",
                   "createOption": "Empty"
               },
@@ -221,7 +221,7 @@
                   "name": "datadisk6",
                   "diskSizeGB": 1023,
                   "lun": 5,
-                  "vhd": { "uri": "[concat('http://',variables('storageAcountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk6' ,'.vhd')]" },
+                  "vhd": { "uri": "[concat('http://',variables('storageAccountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk6' ,'.vhd')]" },
                   "caching": "None",
                   "createOption": "Empty"
               },
@@ -229,7 +229,7 @@
                   "name": "datadisk7",
                   "diskSizeGB": 1023,
                   "lun": 6,
-                  "vhd": { "uri": "[concat('http://',variables('storageAcountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk7' ,'.vhd')]" },
+                  "vhd": { "uri": "[concat('http://',variables('storageAccountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk7' ,'.vhd')]" },
                   "caching": "None",
                   "createOption": "Empty"
               },
@@ -237,7 +237,7 @@
                   "name": "datadisk8",
                   "diskSizeGB": 1023,
                   "lun": 7,
-                  "vhd": { "uri": "[concat('http://',variables('storageAcountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk8' ,'.vhd')]" },
+                  "vhd": { "uri": "[concat('http://',variables('storageAccountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk8' ,'.vhd')]" },
                   "caching": "None",
                   "createOption": "Empty"
               },
@@ -245,7 +245,7 @@
                   "name": "datadisk9",
                   "diskSizeGB": 1023,
                   "lun": 8,
-                  "vhd": { "uri": "[concat('http://',variables('storageAcountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk9' ,'.vhd')]" },
+                  "vhd": { "uri": "[concat('http://',variables('storageAccountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk9' ,'.vhd')]" },
                   "caching": "None",
                   "createOption": "Empty"
               },
@@ -253,7 +253,7 @@
                   "name": "datadisk10",
                   "diskSizeGB": 1023,
                   "lun": 9,
-                  "vhd": { "uri": "[concat('http://',variables('storageAcountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk10' ,'.vhd')]" },
+                  "vhd": { "uri": "[concat('http://',variables('storageAccountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk10' ,'.vhd')]" },
                   "caching": "None",
                   "createOption": "Empty"
               },
@@ -261,7 +261,7 @@
                   "name": "datadisk11",
                   "diskSizeGB": 1023,
                   "lun": 10,
-                  "vhd": { "uri": "[concat('http://',variables('storageAcountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk11' ,'.vhd')]" },
+                  "vhd": { "uri": "[concat('http://',variables('storageAccountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk11' ,'.vhd')]" },
                   "caching": "None",
                   "createOption": "Empty"
               },
@@ -269,7 +269,7 @@
                   "name": "datadisk12",
                   "diskSizeGB": 1023,
                   "lun": 11,
-                  "vhd": { "uri": "[concat('http://',variables('storageAcountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk12' ,'.vhd')]" },
+                  "vhd": { "uri": "[concat('http://',variables('storageAccountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk12' ,'.vhd')]" },
                   "caching": "None",
                   "createOption": "Empty"
               },
@@ -277,7 +277,7 @@
                   "name": "datadisk13",
                   "diskSizeGB": 1023,
                   "lun": 12,
-                  "vhd": { "uri": "[concat('http://',variables('storageAcountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk13' ,'.vhd')]" },
+                  "vhd": { "uri": "[concat('http://',variables('storageAccountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk13' ,'.vhd')]" },
                   "caching": "None",
                   "createOption": "Empty"
               },
@@ -285,7 +285,7 @@
                   "name": "datadisk14",
                   "diskSizeGB": 1023,
                   "lun": 13,
-                  "vhd": { "uri": "[concat('http://',variables('storageAcountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk14' ,'.vhd')]" },
+                  "vhd": { "uri": "[concat('http://',variables('storageAccountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk14' ,'.vhd')]" },
                   "caching": "None",
                   "createOption": "Empty"
               },
@@ -293,7 +293,7 @@
                   "name": "datadisk15",
                   "diskSizeGB": 1023,
                   "lun": 14,
-                  "vhd": { "uri": "[concat('http://',variables('storageAcountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk15' ,'.vhd')]" },
+                  "vhd": { "uri": "[concat('http://',variables('storageAccountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk15' ,'.vhd')]" },
                   "caching": "None",
                   "createOption": "Empty"
               },
@@ -301,7 +301,7 @@
                   "name": "datadisk16",
                   "diskSizeGB": 1023,
                   "lun": 15,
-                  "vhd": { "uri": "[concat('http://',variables('storageAcountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk16' ,'.vhd')]" },
+                  "vhd": { "uri": "[concat('http://',variables('storageAccountName'), '.blob.core.windows.net/vhd/', variables('namespace'), '-data-disk16' ,'.vhd')]" },
                   "caching": "None",
                   "createOption": "Empty"
               }
