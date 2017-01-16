@@ -129,9 +129,13 @@ install_java()
 
 install_java
 
-if [ ${INSTALL_PLUGINS} -ne 0 ]; then
-    install_plugins
-fi
+sudo apt-get -yq update
+
+sudo apt-get -yq install gcc
+sudo apt-get -yq install git
+sudo apt-get -yq install python3-dev
+sudo apt-get -yq install python3-pip
+sudo pip3 install esrally
 
 ELAPSED_TIME=$(($SECONDS - $START_TIME))
 PRETTY=$(printf '%dh:%dm:%ds\n' $(($ELAPSED_TIME/3600)) $(($ELAPSED_TIME%3600/60)) $(($ELAPSED_TIME%60)))
