@@ -69,7 +69,7 @@ MINIMUM_MASTER_NODES=3
 USER_ADMIN_PWD="changeME"
 
 #Loop through options passed
-while getopts :v:A:Z:p:ldh optname; do
+while getopts :n:v:A:R:K:S:Z:p:a:k:L:xyzldjh optname; do
   log "Option $optname set"
   case $optname in
     v) #elasticsearch version number
@@ -121,9 +121,20 @@ install_java()
     bash install-java.sh
 }
 
+# Format data disks (Find data disks then partition, format, and mount them as seperate drives)
+format_data_disks()
+{
+    log "[format_data_disks] starting to RAID0 the attached disks"
+    # using the -s paramater causing disks under /datadisks/* to be raid0'ed
+    bash vm-disk-utils-0.1.sh -s
+    log "[format_data_disks] finished RAID0'ing the attached disks"
+}
+
 #########################
 # Installation sequence
 #########################
+
+format_data_disks
 
 install_java
 
@@ -140,6 +151,9 @@ log "Install python3-pip"
 sudo apt-get -yq install python3-pip
 log "Install esrally"
 sudo pip3 install esrally
+
+log "Point esrally to use attached disks for its benchmark data"
+sed -i 's/^root\.dir =.*$/root.dir = \/datadisks\/disk1\/benchmarks/g' ~/.rally/rally.ini
 
 ELAPSED_TIME=$(($SECONDS - $START_TIME))
 PRETTY=$(printf '%dh:%dm:%ds\n' $(($ELAPSED_TIME/3600)) $(($ELAPSED_TIME%3600/60)) $(($ELAPSED_TIME%60)))
