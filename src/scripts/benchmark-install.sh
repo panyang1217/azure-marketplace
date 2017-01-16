@@ -152,6 +152,8 @@ sudo apt-get -yq install python3-pip
 log "Install esrally"
 sudo pip3 install esrally
 
+esrally confgure
+
 log "Point esrally to use attached disks for its benchmark data"
 sed -i 's/^root\.dir =.*$/root.dir = \/datadisks\/disk1\/benchmarks/g' ~/.rally/rally.ini
 
