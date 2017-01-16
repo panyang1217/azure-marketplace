@@ -72,8 +72,10 @@
     "commonInstallParams": "[concat(parameters('esSettings').clusterName, ' -v ', parameters('esSettings').version, ' -A ', parameters('esSettings').shieldAdminPwd, ' -R ', parameters('esSettings').shieldReadPwd, ' -K ', parameters('esSettings').shieldKibanaPwd, ' -S ', parameters('esSettings').shieldKibanaServerPwd, ' -Z ', parameters('topologySettings').vmDataNodeCount, ' -p \"', variables('namespacePrefix'), '\" -a \"', parameters('azureCloudStorageAccount').name, '\" -k \"', parameters('azureCloudStorageAccount').key, '\" -L \"', parameters('esSettings').installAdditionalPlugins, '\"')]",
     "ubuntuScripts": [
       "[concat(parameters('templateBaseUrl'), 'scripts/elasticsearch-ubuntu-install.sh')]",
+      "[concat(parameters('templateBaseUrl'), 'scripts/benchmark-install.sh')]",
       "[concat(parameters('templateBaseUrl'), 'scripts/kibana-install.sh')]",
       "[concat(parameters('templateBaseUrl'), 'scripts/vm-disk-utils-0.1.sh')]",
+      "[concat(parameters('templateBaseUrl'), 'scripts/install-java.sh')]",
       "[concat(parameters('templateBaseUrl'), 'scripts/user-information.sh')]",
       "[concat(parameters('templateBaseUrl'), 'scripts/data-node-install.sh')]"
     ],
@@ -121,6 +123,18 @@
           },
           "protectedSettings": {
             "commandToExecute": "[concat('bash data-node-install.sh -', variables('dataNodeShortOpt'), variables('commonShortOpts'), variables('commonInstallParams'), ' -U \"http://app-lon02.marketo.com/index.php/leadCapture/save2\" -I \"813-MAM-392\" -c \"', parameters('phoneHomeSettings').company, '\" -e \"', parameters('phoneHomeSettings').email, '\" -f \"', parameters('phoneHomeSettings').firstName, '\" -m \"', parameters('phoneHomeSettings').lastName, '\" -t \"', parameters('phoneHomeSettings').jobTitle, '\" -s \"', parameters('phoneHomeSettings').topology, '\" -o \"', parameters('phoneHomeSettings').country, '\"')]"
+          }
+        },
+        "benchmark": {
+          "publisher": "Microsoft.Azure.Extensions",
+          "type": "CustomScript",
+          "typeHandlerVersion": "2.0",
+          "autoUpgradeMinorVersion": true,
+          "settings": {
+            "fileUris": "[variables('ubuntuScripts')]"
+          },
+          "protectedSettings": {
+            "commandToExecute": "[concat('bash benchmark-install.sh -', variables('commonShortOpts'), variables('commonInstallParams'))]"
           }
         },
         "kibana": {

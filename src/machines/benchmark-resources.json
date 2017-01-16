@@ -312,8 +312,20 @@
           "networkInterfaces": [ { "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]" } ]
         }
       }
+      },
+      "resources": [
+      {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "name": "[concat(variables('namespace'), '/script')]",
+        "apiVersion": "2016-03-30",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+          "[concat('Microsoft.Compute/virtualMachines/', parameters('namespace'))]"
+        ],
+        "properties": "[parameters('osSettings').extensionSettings.benchmark]"
+      }]
     }
-  }],
+  ],
   "outputs": {
     "ssh": {
       "value": "[concat(parameters('credentials').adminUsername, '@',reference(resourceId('Microsoft.Network/publicIPAddresses',variables('publicIpName')),providers('Microsoft.Network', 'publicIPAddresses').apiVersions[0]).dnsSettings.fqdn)]",
