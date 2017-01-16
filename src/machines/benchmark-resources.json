@@ -153,7 +153,7 @@
     {
       "apiVersion": "2016-03-30",
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[concat(variables('namespace'), '-0')]",
+      "name": "[concat(variables('namespace'))]",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]",
@@ -169,7 +169,7 @@
           "osDisk": {
             "name": "osdisk",
             "vhd": {
-              "uri": "[concat('http://', variables('storageAccountName'),'.blob.core.windows.net/vhds/', concat(variables('namespace'), '-0'), '-osdisk.vhd')]"
+              "uri": "[concat('http://', variables('storageAccountName'),'.blob.core.windows.net/vhds/', concat(variables('namespace')), '-osdisk.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
