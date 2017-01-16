@@ -218,7 +218,7 @@ setup_data_disk()
 # Install Oracle Java
 install_java()
 {
-    bash install_java.sh
+    bash install-java.sh
 }
 
 # Install Elasticsearch

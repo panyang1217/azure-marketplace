@@ -92,9 +92,7 @@ while getopts :v:A:Z:p:ldh optname; do
       exit 2
       ;;
     \?) #unrecognized option - show help
-      echo -e \\n"Option -${BOLD}$OPTARG${NORM} not allowed."
-      help
-      exit 2
+      log \\n"Option -${BOLD}$OPTARG${NORM} ignored."
       ;;
   esac
 done
@@ -120,7 +118,7 @@ log "Cluster install plugins is set to $INSTALL_PLUGINS"
 # Install Oracle Java
 install_java()
 {
-    bash install_java.sh
+    bash install-java.sh
 }
 
 #########################
@@ -129,12 +127,18 @@ install_java()
 
 install_java
 
+log "Update apt-get"
 sudo apt-get -yq update
 
+log "Install gcc"
 sudo apt-get -yq install gcc
+log "Install git"
 sudo apt-get -yq install git
+log "Install python3-dev"
 sudo apt-get -yq install python3-dev
+log "Install python3-pip"
 sudo apt-get -yq install python3-pip
+log "Install esrally"
 sudo pip3 install esrally
 
 ELAPSED_TIME=$(($SECONDS - $START_TIME))
