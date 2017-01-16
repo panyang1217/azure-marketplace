@@ -134,7 +134,7 @@
             "fileUris": "[variables('ubuntuScripts')]"
           },
           "protectedSettings": {
-            "commandToExecute": "[concat('bash benchmark-install.sh -', variables('commonShortOpts'), variables('commonInstallParams'))]"
+            "commandToExecute": "[concat('bash benchmark-install.sh -y', variables('commonShortOpts'), variables('commonInstallParams'))]"
           }
         },
         "kibana": {

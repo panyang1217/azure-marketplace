@@ -53,3 +53,6 @@ install_java()
     done
     command -v java >/dev/null 2>&1 || { log "Java did not get installed properly even after a retry and a forced installation" >&2; exit 50; }
 }
+
+
+install_java
