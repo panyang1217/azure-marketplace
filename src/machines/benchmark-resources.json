@@ -303,10 +303,10 @@
                 "caching": "None",
                 "createOption": "Empty"
             }
-          ],
-          "networkProfile": {
-            "networkInterfaces": [ { "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]" } ]
-          }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [ { "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]" } ]
         }
       },
       "resources": [
