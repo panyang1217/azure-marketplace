@@ -2,47 +2,47 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "templateBaseUrl": {
-        "type": "string",
-        "metadata": {
-            "description": "The base url for templates"
-        }
-    },
-    "esSettings": {
+      "templateBaseUrl": {
+          "type": "string",
+          "metadata": {
+              "description": "The base url for templates"
+          }
+      },
+      "esSettings": {
+          "type": "object",
+          "metadata": {
+              "description" : "The Elasticsearch settings"
+          }
+      },
+      "commonVmSettings": {
+          "type": "object",
+          "metadata": {
+              "description" : "Shared VM settings"
+          }
+      },
+      "phoneHomeSettings": {
+          "type": "object",
+          "metadata": {
+              "description": "Deployment details sent back to our CRM, only needed when deploying from the marketplace, optional in the ARM template"
+          }
+      },
+      "topologySettings": {
+          "type": "object",
+          "metadata": {
+              "description": "Aggregate for topology variable"
+          }
+      },
+      "networkSettings": {
         "type": "object",
         "metadata": {
-            "description" : "The Elasticsearch settings"
+          "description": "Network settings"
         }
-    },
-    "commonVmSettings": {
-        "type": "object",
-        "metadata": {
-            "description" : "Shared VM settings"
-        }
-    },
-    "phoneHomeSettings": {
-        "type": "object",
-        "metadata": {
-            "description": "Deployment details sent back to our CRM, only needed when deploying from the marketplace, optional in the ARM template"
-        }
-    },
-    "topologySettings": {
-        "type": "object",
-        "metadata": {
-            "description": "Aggregate for topology variable"
-        }
-    },
-    "networkSettings": {
-      "type": "object",
-      "metadata": {
-        "description": "Network settings"
-      }
-    },
-    "azureCloudStorageAccount": {
-        "type": "object",
-        "metadata": {
-            "description": "The storage settings for the Azure Cloud plugin"
-        }
+      },
+      "azureCloudStorageAccount": {
+          "type": "object",
+          "metadata": {
+              "description": "The storage settings for the Azure Cloud plugin"
+          }
     },
     "elasticTags": {
       "type": "object",

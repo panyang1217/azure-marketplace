@@ -213,8 +213,8 @@ format_data_disks()
     else
         log "[format_data_disks] data node, data disks may be attached"
         log "[format_data_disks] starting partition and format attached disks"
-        # using the -s paramater causing disks under /datadisks/* to be raid0'ed
-        bash vm-disk-utils-0.1.sh -s
+    # using the -s paramater causing disks under /datadisks/* to be raid0'ed
+    bash vm-disk-utils-0.1.sh -s
         EXIT_CODE=$?
         if [ $EXIT_CODE -ne 0 ]; then
           log "[format_data_disks] returned non-zero exit code: $EXIT_CODE"
@@ -228,11 +228,11 @@ format_data_disks()
 setup_data_disk()
 {
     if [ -d "/datadisks" ]; then
-        local RAIDDISK="/datadisks/disk1"
-        log "[setup_data_disk] Configuring disk $RAIDDISK/elasticsearch/data"
-        mkdir -p "$RAIDDISK/elasticsearch/data"
-        chown -R elasticsearch:elasticsearch "$RAIDDISK/elasticsearch"
-        chmod 755 "$RAIDDISK/elasticsearch"
+    local RAIDDISK="/datadisks/disk1"
+    log "[setup_data_disk] Configuring disk $RAIDDISK/elasticsearch/data"
+    mkdir -p "$RAIDDISK/elasticsearch/data"
+    chown -R elasticsearch:elasticsearch "$RAIDDISK/elasticsearch"
+    chmod 755 "$RAIDDISK/elasticsearch"
     elif [ ${MASTER_ONLY_NODE} -eq 0 -a ${CLIENT_ONLY_NODE} -eq 0 ]; then
         local TEMPDISK="/mnt"
         log "[setup_data_disk] Configuring disk $TEMPDISK/elasticsearch/data"
@@ -363,7 +363,7 @@ install_azure_cloud_plugin()
     if [[ "${ES_VERSION}" == \5* ]]; then
     	  sudo $(plugin_cmd) install repository-azure --batch
     else
-    	  sudo $(plugin_cmd) install cloud-azure
+    	sudo $(plugin_cmd) install cloud-azure
     fi
     log "[install_azure_cloud_plugin] Installed plugin Cloud-Azure"
 }
@@ -382,7 +382,7 @@ install_additional_plugins()
                 sudo $(plugin_cmd) install $PLUGIN --batch
                 MANDATORY_PLUGINS+="$PLUGIN,"
             else
-                sudo $(plugin_cmd) install $PLUGIN
+            sudo $(plugin_cmd) install $PLUGIN
             fi
             log "[install_additional_plugins] Installed plugin $PLUGIN"
         fi
@@ -610,7 +610,7 @@ configure_elasticsearch_yaml()
     fi
 
     if [ -n "$DATAPATH_CONFIG" ]; then
-        log "[configure_elasticsearch_yaml] Update configuration with data path list of $DATAPATH_CONFIG"
+    log "[configure_elasticsearch_yaml] Update configuration with data path list of $DATAPATH_CONFIG"
         echo "path.data: $DATAPATH_CONFIG" >> $ES_CONF
     fi
 
@@ -811,11 +811,11 @@ port_forward()
       # add netfilter-persistent to startup before elasticsearch
       sudo update-rc.d netfilter-persistent defaults 90 15
     else
-      #persist the rules to file
-      sudo service iptables-persistent save
-      sudo service iptables-persistent start
-      # add iptables-persistent to startup before elasticsearch
-      sudo update-rc.d iptables-persistent defaults 90 15
+    #persist the rules to file
+    sudo service iptables-persistent save
+    sudo service iptables-persistent start
+    # add iptables-persistent to startup before elasticsearch
+    sudo update-rc.d iptables-persistent defaults 90 15
     fi
 
     log "[port_forward] installed iptables-persistent"

@@ -12,8 +12,9 @@
       "type": "object",
       "metadata": {
         "description": "Application Gateway settings"
-      }
-    },
+    }
+    }
+  },
     "elasticTags": {
       "type": "object",
       "defaultValue": {

@@ -115,6 +115,9 @@ while getopts :n:v:A:R:K:S:Z:p:U:I:c:e:f:m:t:s:o:a:k:L:Xxyzldjh optname; do
     X) #anonymous access
       ANONYMOUS_ACCESS=1
       ;;
+    X) #anonymous access
+      ANONYMOUS_ACCESS=1
+      ;;
     Z) #number of data nodes hints (used to calculate minimum master nodes)
       DATANODE_COUNT=${OPTARG}
       ;;
