@@ -1,6 +1,6 @@
 {
   "handler": "Microsoft.Compute.MultiVm",
-  "version": "0.0.1-preview",
+  "version": "0.1.2-preview",
   "parameters": {
     "basics": [
       {
@@ -130,11 +130,11 @@
                 "type": "Microsoft.Network.VirtualNetworkCombo",
                 "label": {
                   "virtualNetwork": "Virtual network",
-                  "subnets": "Subnet"
+                  "subnets": "Subnets"
                 },
                 "toolTip": {
                   "virtualNetwork": "Create a new Virtual Network or use an existing one",
-                  "subnets": "Choose the Subnet for the Virtual Network for Elasticsearch nodes. If choosing an existing Virtual Network, the Subnet to use will need to exist beforehand; Creating a new subnet in an existing Virtual Network is not supported"
+                  "subnets": "Choose the Subnets for Elasticsearch nodes and for Application Gateway, if selecting Application Gateway as the load balancer type. If choosing an existing Virtual Network, the Subnets to use will need to exist beforehand; Creating a new subnet in an existing Virtual Network is not supported"
                 },
                 "defaultValue": {
                   "name": "es-net",
@@ -148,7 +148,7 @@
                 },
                 "subnets": {
                   "subnet1": {
-                    "label": "subnet",
+                    "label": "Elasticsearch nodes subnet",
                     "defaultValue": {
                       "name": "es-subnet",
                       "addressPrefixSize": "/25"
@@ -156,6 +156,17 @@
                     "constraints": {
                       "minAddressPrefixSize": "/25",
                       "minAddressCount": 3,
+                      "requireContiguousAddresses": true
+                    }
+                  },
+                  "subnet2": {
+                    "label": "Application Gateway subnet",
+                    "defaultValue": {
+                      "name": "es-gateway-subnet",
+                      "addressPrefixSize": "/28"
+                    },
+                    "constraints": {
+                      "minAddressPrefixSize": "/28",
                       "requireContiguousAddresses": true
                     }
                   }
@@ -832,9 +843,173 @@
                 {
                   "label": "External",
                   "value": "external"
+                },
+                {
+                  "label": "Application Gateway",
+                  "value": "gateway"
                 }
               ]
             }
+          },
+          {
+            "name": "applicationGateway",
+            "type": "Microsoft.Common.Section",
+            "label": "Application Gateway Details",
+            "visible": "[equals(steps('externalAccessStep').loadBalancerType, 'gateway')]",
+            "elements": [
+              {
+                "name": "applicationGatewayTier",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Tier",
+                "toolTip": "Choose between Standard and WAF (Web Application Firewall)",
+                "defaultValue": "Standard",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Standard",
+                      "value": "Standard"
+                    },
+                    {
+                      "label": "WAF",
+                      "value": "WAF"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "applicationGatewayFirewallStatus",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Firewall Status",
+                "visible": "[equals(steps('externalAccessStep').applicationGateway.applicationGatewayTier, 'waf')]",
+                "defaultValue": "enabled",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Enabled",
+                      "value": "Enabled"
+                    },
+                    {
+                      "label": "Disabled",
+                      "value": "Disabled"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "applicationGatewayFirewallMode",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Firewall Mode",
+                "toolTip": "To view detection logs, enable diagnostics logs after the cluster is created",
+                "visible": "[equals(steps('externalAccessStep').applicationGateway.applicationGatewayTier, 'waf')]",
+                "defaultValue": "Detection",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Detection",
+                      "value": "Detection"
+                    },
+                    {
+                      "label": "Prevention",
+                      "value": "Prevention"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "applicationGatewaySkuSize",
+                "type": "Microsoft.Common.DropDown",
+                "label": "SKU size",
+                "toolTip": "The size of the Application Gateway. Medium or above is recommended for Production clusters, and is required for WAF tier",
+                "defaultValue": "Medium",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "Small",
+                      "value": "Small"
+                    },
+                    {
+                      "label": "Medium",
+                      "value": "Medium"
+                    },
+                    {
+                      "label": "Large",
+                      "value": "Large"
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "applicationGatewayInstanceCount",
+                "type": "Microsoft.Common.DropDown",
+                "label": "Instance Count",
+                "defaultValue": "2",
+                "constraints": {
+                  "allowedValues": [
+                    {
+                      "label": "1",
+                      "value": 1
+                    },
+                    {
+                      "label": "2",
+                      "value": 2
+                    },
+                    {
+                      "label": "3",
+                      "value": 3
+                    },
+                    {
+                      "label": "4",
+                      "value": 4
+                    },
+                    {
+                      "label": "5",
+                      "value": 5
+                    },
+                    {
+                      "label": "6",
+                      "value": 6
+                    },
+                    {
+                      "label": "7",
+                      "value": 7
+                    },
+                    {
+                      "label": "8",
+                      "value": 8
+                    },
+                    {
+                      "label": "9",
+                      "value": 9
+                    },
+                    {
+                      "label": "10",
+                      "value": 10
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "applicationGatewayCertBlob",
+                "type": "Microsoft.Common.FileUpload",
+                "label": "Upload PFX certificate",
+                "toolTip": "The certificate to use for HTTPS traffic to the application gateway",
+                "constraints": {
+                  "required": true,
+                  "accept": ".pfx"
+                },
+                "options": {
+                  "multiple": false,
+                  "uploadMode": "file",
+                  "openMode": "binary"
+                }
+              },
+              {
+                "name": "applicationGatewayCertPassword",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": "Certificate password",
+                "toolTip": "The password to access the certificate"
+              }
+            ]
           }
         ]
       },
@@ -972,15 +1147,18 @@
       "azureCloudPlugin": "No",
       "azureCloudStorageAccountName": "",
       "azureCloudStorageAccountKey": "",
+      "xpackPlugins": "Yes",
       "esAdditionalPlugins": "",
       "loadBalancerType": "[steps('externalAccessStep').loadBalancerType]",
       "vNetNewOrExisting": "[steps('clusterSettingsStep').virtualNetworkConfiguration.virtualNetwork.newOrExisting]",
       "vNetName": "[steps('clusterSettingsStep').virtualNetworkConfiguration.virtualNetwork.name]",
-      "vNetSubnetName": "[steps('clusterSettingsStep').virtualNetworkConfiguration.virtualNetwork.subnets.subnet1.name]",
+      "vNetClusterSubnetName": "[steps('clusterSettingsStep').virtualNetworkConfiguration.virtualNetwork.subnets.subnet1.name]",
       "vNetLoadBalancerIp": "[steps('clusterSettingsStep').virtualNetworkConfiguration.virtualNetwork.subnets.subnet1.startAddress]",
       "vNetExistingResourceGroup": "[steps('clusterSettingsStep').virtualNetworkConfiguration.virtualNetwork.resourceGroup]",
       "vNetNewAddressPrefix": "[steps('clusterSettingsStep').virtualNetworkConfiguration.virtualNetwork.addressPrefix]",
-      "vNetNewSubnetAddressPrefix": "[steps('clusterSettingsStep').virtualNetworkConfiguration.virtualNetwork.subnets.subnet1.addressPrefix]",
+      "vNetNewClusterSubnetAddressPrefix": "[steps('clusterSettingsStep').virtualNetworkConfiguration.virtualNetwork.subnets.subnet1.addressPrefix]",
+      "vNetAppGatewaySubnetName": "[steps('clusterSettingsStep').virtualNetworkConfiguration.virtualNetwork.subnets.subnet2.name]",
+      "vNetNewAppGatewaySubnetAddressPrefix": "[steps('clusterSettingsStep').virtualNetworkConfiguration.virtualNetwork.subnets.subnet2.addressPrefix]",
       "kibana": "[steps('externalAccessStep').kibana]",
       "jumpbox": "[steps('externalAccessStep').jumpbox]",
       "vmSizeDataNodes": "[steps('nodesStep').dataNodes.vmSizeDataNodes]",
@@ -1001,6 +1179,13 @@
       "securityAdminPassword": "[steps('securityStep').es_admin.securityAdminPassword]",
       "securityReadPassword": "[steps('securityStep').es_read.securityReadPassword]",
       "securityKibanaPassword": "[steps('securityStep').es_kibana.securityKibanaPassword]",
+      "appGatewayTier": "[steps('externalAccessStep').applicationGateway.applicationGatewayTier]",
+      "appGatewaySku": "[steps('externalAccessStep').applicationGateway.applicationGatewaySkuSize]",
+      "appGatewayCount": "[steps('externalAccessStep').applicationGateway.applicationGatewayInstanceCount]",
+      "appGatewayCertBlob": "[steps('externalAccessStep').applicationGateway.applicationGatewayCertBlob]",
+      "appGatewayCertPassword": "[steps('externalAccessStep').applicationGateway.applicationGatewayCertPassword]",
+      "appGatewayWafStatus": "[steps('externalAccessStep').applicationGateway.applicationGatewayFirewallStatus]",
+      "appGatewayWafMode": "[steps('externalAccessStep').applicationGateway.applicationGatewayFirewallMode]",
       "location": "[location()]",
       "userCompany": "[steps('userInformationStep').userCompany]",
       "userEmail": "[steps('userInformationStep').userEmail]",
