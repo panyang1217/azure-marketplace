@@ -191,7 +191,7 @@
               }
             }
           }
-        ],       
+        ],
         "requestRoutingRules": [
           {
             "Name": "rule1",

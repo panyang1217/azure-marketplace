@@ -58,12 +58,12 @@
     "publicIpName": "[concat(variables('namespace'), '-ip')]",
     "securityGroupName": "[concat(variables('namespace'), '-nsg')]",
     "nicName": "[concat(variables('namespace'), '-nic')]",
-    "password_osProfile": {
+    "passwordOsProfile": {
       "computername": "[parameters('namespace')]",
       "adminUsername": "[parameters('credentials').adminUsername]",
       "adminPassword": "[parameters('credentials').password]"
     },
-    "sshPublicKey_osProfile": {
+    "sshPublicKeyOsProfile": {
       "computername": "[parameters('namespace')]",
       "adminUsername": "[parameters('credentials').adminUsername]",
       "linuxConfiguration": {
@@ -76,7 +76,7 @@
         }
       }
     },
-    "osProfile": "[variables(concat(parameters('credentials').authenticationType, '_osProfile'))]"
+    "osProfile": "[variables(concat(parameters('credentials').authenticationType, 'OsProfile'))]"
   },
   "resources": [
     {

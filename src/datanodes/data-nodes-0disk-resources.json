@@ -19,6 +19,12 @@
       "metadata": {
         "description": "Storage Account Settings"
       }
+    },
+    "diskEncryptionSettings": {
+      "type": "object",
+      "metadata": {
+        "description": "The encryption settings for Azure Disk Encryption"
+      }
     }
   },
   "variables": {

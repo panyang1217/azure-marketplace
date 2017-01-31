@@ -19,6 +19,12 @@
       "metadata": {
         "description": "Storage Account Settings"
       }
+    },
+    "diskEncryptionSettings": {
+      "type": "object",
+      "metadata": {
+        "description": "The encryption settings for Azure Disk Encryption"
+      }
     }
   },
   "variables": {
@@ -136,6 +142,16 @@
                   "lun": 0,
                   "vhd": {
                     "uri": "[concat('http://',variables('storageAccountPrefix')[mod(div(copyIndex(),variables('nodesPerStorageAccount')),variables('storageAccountPrefixCount'))],variables('storageAccountPrefix')[div(div(copyIndex(),variables('nodesPerStorageAccount')),variables('storageAccountPrefixCount'))],variables('newStorageAccountNamePrefix'),add(1,div(copyIndex(),variables('nodesPerStorageAccount'))), '.blob.core.windows.net/vhd/', variables('namespace'), copyindex(),'-data-disk1' ,'.vhd')]"
+                  },
+                  "caching": "None",
+                  "createOption": "Empty"
+                },
+                {
+                  "name": "datadisk2",
+                  "diskSizeGB": "[parameters('storageSettings').diskSize]",
+                  "lun": 1,
+                  "vhd": {
+                    "uri": "[concat('http://',variables('storageAccountPrefix')[mod(div(copyIndex(),variables('nodesPerStorageAccount')),variables('storageAccountPrefixCount'))],variables('storageAccountPrefix')[div(div(copyIndex(),variables('nodesPerStorageAccount')),variables('storageAccountPrefixCount'))],variables('newStorageAccountNamePrefix'),add(1,div(copyIndex(),variables('nodesPerStorageAccount'))), '.blob.core.windows.net/vhd/', variables('namespace'), copyindex(),'-data-disk2' ,'.vhd')]"
                   },
                   "caching": "None",
                   "createOption": "Empty"

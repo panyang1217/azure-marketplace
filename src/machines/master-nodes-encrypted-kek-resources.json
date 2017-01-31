@@ -1,0 +1,148 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "templateBaseUrl": {
+      "type": "string",
+      "metadata": {
+        "description": "Base uri of resources"
+      }
+    },
+    "vm": {
+      "type": "object",
+      "metadata": {
+        "description": "vm configuration"
+      }
+    },
+    "diskEncryptionSettings": {
+        "type": "object",
+        "metadata": {
+            "description": "The encryption settings for Azure Disk Encryption"
+        }
+    }
+  },
+  "variables": {
+    "namespace" : "[parameters('vm').namespace]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2016-03-30",
+      "type": "Microsoft.Compute/availabilitySets",
+      "name": "[concat(variables('namespace'), 'av-set')]",
+      "location": "[parameters('vm').shared.location]",
+      "properties": {
+        "platformUpdateDomainCount": 3,
+        "platformFaultDomainCount": 3
+      }
+    },
+    {
+      "name": "[concat(variables('namespace'), copyindex(), '-vm-creation')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-02-01",
+      "dependsOn" : [
+        "[concat('Microsoft.Compute/availabilitySets/', variables('namespace'), 'av-set')]"
+      ],
+      "copy": {
+        "name": "[concat(variables('namespace'),'vm-creation-loop')]",
+        "count": "[parameters('vm').count]"
+      },
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('templateBaseUrl'), '/partials/vm.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "templateBaseUrl": {
+            "value": "[parameters('templateBaseUrl')]"
+          },
+          "vm": {
+            "value": "[parameters('vm')]"
+          },
+          "availabilitySet": {
+            "value": "[concat(variables('namespace'), 'av-set')]"
+          },
+          "index": {
+            "value": "[copyindex()]"
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(variables('namespace'), copyindex(), '/', parameters('diskEncryptionSettings').extensionName)]",
+      "apiVersion": "2015-06-15",
+      "dependsOn" : [
+        "[concat(variables('namespace'),'vm-creation-loop')]"
+      ],
+      "location": "[parameters('vm').shared.location]",
+      "copy": {
+        "name": "[concat(variables('namespace'),'vm-encryption')]",
+        "count": "[parameters('vm').count]"
+      },
+      "properties": {
+        "protectedSettings": {
+          "AADClientSecret": "[parameters('diskEncryptionSettings').activeDirectoryClientSecret]",
+          "Passphrase": "[parameters('diskEncryptionSettings').passphrase]"
+        },
+        "publisher": "Microsoft.Azure.Security",
+        "settings": {
+          "AADClientID": "[parameters('diskEncryptionSettings').activeDirectoryClientId]",
+          "EncryptionOperation": "EnableEncryption",
+          "KeyEncryptionAlgorithm": "[parameters('diskEncryptionSettings').keyEncryptionAlgorithm]",
+          "KeyEncryptionKeyURL": "[parameters('diskEncryptionSettings').keyEncryptionKeyUrl]",
+          "KeyVaultURL": "[concat('https://', parameters('diskEncryptionSettings').keyVaultName, '.vault.azure.net/')]",
+          "SequenceVersion": "[parameters('diskEncryptionSettings').sequenceVersion]",
+          "VolumeType": "All"
+        },
+        "type": "[parameters('diskEncryptionSettings').extensionName]",
+        "typeHandlerVersion": "[parameters('diskEncryptionSettings').extensionVersion]"
+      }
+    },
+    {
+      "name": "[concat(variables('namespace'), copyindex(), '-vm-update')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2016-02-01",
+      "dependsOn" : [
+        "[concat(variables('namespace'),'vm-encryption')]"
+      ],
+      "copy": {
+        "name": "[concat(variables('namespace'),'vm-update-loop')]",
+        "count": "[parameters('vm').count]"
+      },
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('templateBaseUrl'), '/partials/encrypt-vm.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "vm": {
+            "value": "[parameters('vm')]"
+          },
+          "index": {
+            "value": "[copyindex()]"
+          },
+          "diskEncryptionSettings": {
+            "value": {
+              "encryptionSettings": {
+                "diskEncryptionKey": {
+                  "sourceVault": {
+                    "id": "[parameters('diskEncryptionSettings').keyVaultResourceId]"
+                  },
+                  "secretUrl": "[reference(resourceId('Microsoft.Compute/virtualMachines/extensions',  concat(variables('namespace'), copyindex()), parameters('diskEncryptionSettings').extensionName)).instanceView.statuses[0].message]"
+                },
+                "keyEncryptionKey": {
+                  "sourceVault": {
+                    "id": "[parameters('diskEncryptionSettings').keyVaultResourceId]"
+                  },
+                  "keyUrl": "[parameters('diskEncryptionSettings').keyEncryptionKeyUrl]"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

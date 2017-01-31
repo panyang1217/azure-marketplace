@@ -43,6 +43,12 @@
           "metadata": {
               "description": "The storage settings for the Azure Cloud plugin"
           }
+      },
+      "diskEncryptionSettings": {
+          "type": "object",
+          "metadata": {
+              "description": "The encryption settings for Azure Disk Encryption"
+          }
       }
   },
   "variables": {
@@ -146,6 +152,21 @@
           }
         }
       }
+    },
+    "diskEncryptionSettings": {
+      "enabled": "[parameters('diskEncryptionSettings').enabled]",
+      "activeDirectoryClientId": "[parameters('diskEncryptionSettings').activeDirectoryClientId]",
+      "activeDirectoryClientSecret": "[parameters('diskEncryptionSettings').activeDirectoryClientSecret]",
+      "keyEncryptionKey": "[parameters('diskEncryptionSettings').keyEncryptionKey]",
+      "keyEncryptionKeyUrl": "[parameters('diskEncryptionSettings').keyEncryptionKeyUrl]",
+      "keyVaultName": "[parameters('diskEncryptionSettings').keyVaultName]",
+      "keyVaultResourceGroup": "[parameters('diskEncryptionSettings').keyVaultResourceGroup]",
+      "keyVaultResourceId": "[parameters('diskEncryptionSettings').keyVaultResourceId]",
+      "passphrase": "[parameters('diskEncryptionSettings').passphrase]",
+      "sequenceVersion": "[parameters('diskEncryptionSettings').sequenceVersion]",
+      "extensionName": "AzureDiskEncryptionForLinux",
+      "extensionVersion": "0.1",
+      "keyEncryptionAlgorithm": "RSA-OAEP"
     }
   },
   "resources": [
@@ -175,6 +196,9 @@
           },
           "networkSettings": {
             "value": "[parameters('networkSettings')]"
+          },
+          "diskEncryptionSettings": {
+            "value": "[variables('diskEncryptionSettings')]"
           }
         }
       }
