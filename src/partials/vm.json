@@ -48,12 +48,12 @@
   "variables": {
     "namespace" : "[parameters('vm').namespace]",
     "computername": "[concat(parameters('vm').namespace, parameters('index'))]",
-    "password_osProfile": {
+    "passwordOsProfile": {
       "computername": "[variables('computername')]",
       "adminUsername": "[parameters('vm').shared.credentials.adminUsername]",
       "adminPassword": "[parameters('vm').shared.credentials.password]"
     },
-    "sshPublicKey_osProfile": {
+    "sshPublicKeyOsProfile": {
       "computername": "[variables('computername')]",
       "adminUsername": "[parameters('vm').shared.credentials.adminUsername]",
       "linuxConfiguration": {
@@ -66,7 +66,7 @@
         }
       }
     },
-    "osProfile": "[variables(concat(parameters('vm').shared.credentials.authenticationType, '_osProfile'))]"
+    "osProfile": "[variables(concat(parameters('vm').shared.credentials.authenticationType, 'OsProfile'))]"
   },
   "resources": [
     {

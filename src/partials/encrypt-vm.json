@@ -1,0 +1,45 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vm": {
+      "type": "object",
+      "metadata": {
+        "description": "Location where resources will be provisioned"
+      }
+    },
+    "index": {
+      "type": "int",
+      "metadata": {
+        "description": "the outer loop index"
+      }
+    },
+    "diskEncryptionSettings": {
+      "type": "secureObject",
+      "metadata": {
+          "description": "The encryption settings for Azure Disk Encryption"
+      }
+    }
+  },
+  "variables": {
+    "namespace" : "[parameters('vm').namespace]",
+    "computername": "[concat(variables('namespace'), parameters('index'))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2016-03-30",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('computername')]",
+      "location": "[parameters('vm').shared.location]",
+      "properties": {
+        "storageProfile": {
+          "osDisk": {
+            "encryptionSettings": "[parameters('diskEncryptionSettings').encryptionSettings]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+  }
+}

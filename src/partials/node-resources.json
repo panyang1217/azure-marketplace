@@ -2,35 +2,48 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "templateBaseUrl": {
-        "type": "string",
+      "templateBaseUrl": {
+          "type": "string",
+          "metadata": {
+              "description": "The base url for templates"
+          }
+      },
+      "osSettings": {
+          "type": "object",
+          "metadata": {
+              "description" : "Operating system settings"
+          }
+      },
+      "commonVmSettings": {
+          "type": "object",
+          "metadata": {
+              "description" : "Shared VM settings"
+          }
+      },
+      "topologySettings": {
+        "type": "object",
+        "defaultValue": {
+          "dataNodesAreMasterEligible": "No"
+        },
         "metadata": {
-            "description": "The base url for templates"
+          "description": "Aggregate for topology variable"
         }
-    },
-    "osSettings": {
+      },
+      "networkSettings": {
         "type": "object",
         "metadata": {
-            "description" : "Operating system settings"
+          "description": "Network settings"
         }
-    },
-    "commonVmSettings": {
-        "type": "object",
-        "metadata": {
-            "description" : "Shared VM settings"
-        }
-    },
-    "topologySettings": {
-      "type": "object",
-      "metadata": {
-        "description": "Aggregate for topology variable"
-      }
-    },
-    "networkSettings": {
-      "type": "object",
-      "metadata": {
-        "description": "Network settings"
-      }
+      },
+      "diskEncryptionSettings": {
+          "type": "object",
+          "defaultValue": {
+            "keyEncryptionKey": "No",
+            "enabled": "No"
+          },
+          "metadata": {
+              "description": "The encryption settings for Azure Disk Encryption"
+		  }
     },
     "elasticTags": {
       "type": "object",
@@ -40,9 +53,14 @@
       "metadata": {
         "description": "A unique identifier to allow the Azure Infrastructure to understand the origin of resources deployed to Azure. You do not need to supply a value for this."
       }
-    }
+      }
   },
   "variables": {
+    "keyEncryptionKeyOpts": {
+      "No": "",
+      "Yes": "-kek"
+    },
+    "keyEncryptionKey": "[variables('keyEncryptionKeyOpts')[parameters('diskEncryptionSettings').keyEncryptionKey]]",
     "jumpboxTemplates": {
       "No": "empty/empty-jumpbox-resources.json",
       "Yes": "machines/jumpbox-resources.json"
@@ -54,17 +72,33 @@
     },
     "kibanaTemplateUrl": "[concat(parameters('templateBaseUrl'), variables('kibanaTemplates')[parameters('topologySettings').kibana])]",
     "masterTemplates": {
+      "No": {
       "No": "machines/master-nodes-resources.json",
+        "Yes": "[concat('machines/master-nodes-encrypted', variables('keyEncryptionKey'), '-resources.json')]"
+      },
+      "Yes": {
+        "No": "empty/empty-master-nodes-resources.json",
       "Yes": "empty/empty-master-nodes-resources.json"
+      }
     },
-    "masterTemplateUrl": "[concat(parameters('templateBaseUrl'), variables('masterTemplates')[parameters('topologySettings').dataNodesAreMasterEligible])]",
+    "masterTemplateUrl": "[concat(parameters('templateBaseUrl'), variables('masterTemplates')[parameters('topologySettings').dataNodesAreMasterEligible][parameters('diskEncryptionSettings').enabled])]",
     "clientTemplates": [
-      "empty/empty-client-nodes-resources.json",
-      "machines/client-nodes-resources.json"
+      {
+        "Yes": "empty/empty-client-nodes-resources.json",
+        "No": "empty/empty-client-nodes-resources.json"
+      },
+      {
+        "Yes": "[concat('machines/client-nodes-encrypted', variables('keyEncryptionKey'), '-resources.json')]",
+        "No": "machines/client-nodes-resources.json"
+      }
     ],
     "clientResourceIndex": "[mod(add(parameters('topologySettings').vmClientNodeCount,2),add(parameters('topologySettings').vmClientNodeCount,1))]",
-    "clientTemplateUrl": "[concat(parameters('templateBaseUrl'), variables('clientTemplates')[variables('clientResourceIndex')])]",
-    "dataTemplateUrl": "[concat(parameters('templateBaseUrl'), 'datanodes/data-node-', string(parameters('topologySettings').dataNodeStorageSettings.dataDisks), 'disk-resources.json')]"
+    "clientTemplateUrl": "[concat(parameters('templateBaseUrl'), variables('clientTemplates')[variables('clientResourceIndex')][parameters('diskEncryptionSettings').enabled])]",
+    "dataTemplates": {
+      "No": "[concat(parameters('templateBaseUrl'), 'datanodes/data-nodes-', string(parameters('topologySettings').dataNodeStorageSettings.dataDisks), 'disk-resources.json')]",
+      "Yes": "[concat(parameters('templateBaseUrl'), 'datanodes/data-nodes-', string(parameters('topologySettings').dataNodeStorageSettings.dataDisks), 'disk-encrypted', variables('keyEncryptionKey'),'-resources.json')]"
+  },
+    "dataTemplateUrl": "[variables('dataTemplates')[parameters('diskEncryptionSettings').enabled]]"
   },
   "resources": [
     {
@@ -93,6 +127,9 @@
               "backendPools": [],
               "imageReference": "[parameters('osSettings').imageReference]"
             }
+          },
+          "diskEncryptionSettings": {
+            "value": "[parameters('diskEncryptionSettings')]"
           },
           "elasticTags": {
             "value": "[parameters('elasticTags')]"
@@ -126,6 +163,9 @@
               "backendPools": "[parameters('topologySettings').loadBalancerBackEndPools]",
               "imageReference": "[parameters('osSettings').imageReference]"
             }
+          },
+          "diskEncryptionSettings": {
+            "value": "[parameters('diskEncryptionSettings')]"
           },
           "elasticTags": {
             "value": "[parameters('elasticTags')]"
@@ -162,6 +202,9 @@
           },
           "storageSettings": {
             "value": "[parameters('topologySettings').dataNodeStorageSettings]"
+          },
+          "diskEncryptionSettings": {
+            "value": "[parameters('diskEncryptionSettings')]"
           },
           "elasticTags": {
             "value": "[parameters('elasticTags')]"

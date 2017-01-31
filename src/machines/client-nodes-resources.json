@@ -14,6 +14,15 @@
         "description": "vm configuration"
       }
     },
+    "diskEncryptionSettings": {
+      "type": "object",
+      "defaultValue": {
+        "enabled": "No"
+      },
+      "metadata": {
+          "description": "The encryption settings for Azure Disk Encryption"
+	  }
+    },
     "elasticTags": {
       "type": "object",
       "defaultValue": {
@@ -21,7 +30,7 @@
       },
       "metadata": {
         "description": "A unique identifier to allow the Azure Infrastructure to understand the origin of resources deployed to Azure. You do not need to supply a value for this."
-      }
+    }
     }
   },
   "variables": {
@@ -36,7 +45,10 @@
       "tags": {
         "provider": "[toUpper(parameters('elasticTags').provider)]"
       },
-      "properties": { }
+      "properties": {
+        "platformUpdateDomainCount": 20,
+        "platformFaultDomainCount": 3
+      }
     },
     {
       "name": "[concat(variables('namespace'), copyindex(), '-vm-creation')]",
@@ -60,13 +72,13 @@
             "value": "[parameters('templateBaseUrl')]"
           },
           "vm": {
-              "value": "[parameters('vm')]"
-            },
-          "availabilitySet": {
-              "value": "[concat(variables('namespace'), 'av-set')]"
+            "value": "[parameters('vm')]"
           },
+        "availabilitySet": {
+            "value": "[concat(variables('namespace'), 'av-set')]"
+        },
           "index": {
-              "value": "[copyindex()]"
+            "value": "[copyindex()]"
             },
           "elasticTags": {
             "value": "[parameters('elasticTags')]"
