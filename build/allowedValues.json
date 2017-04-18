@@ -118,7 +118,12 @@
     ["Standard_F2s", 4, "Premium", false],
     ["Standard_F4s", 8, "Premium", false],
     ["Standard_F8s", 16, "Premium", false],
-    ["Standard_F16s", 32, "Premium", false]
+    ["Standard_F16s", 32, "Premium", false],
+
+    ["Standard_L4s", 8, "Premium", false],
+    ["Standard_L8s", 16, "Premium", false],
+    ["Standard_L16s", 32, "Premium", false],
+    ["Standard_L32s", 64, "Premium", false]
   ],
   "ignoredVmsBecauseWeHaveNo32DisksResource" : [
     "D14", "D5_v2", "D14_v2", "DS14", "DS5_v2", "DS14_v2"

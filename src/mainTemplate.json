@@ -158,7 +158,11 @@
         "Standard_F2s",
         "Standard_F4s",
         "Standard_F8s",
-        "Standard_F16s"
+        "Standard_F16s",
+        "Standard_L4s",
+        "Standard_L8s",
+        "Standard_L16s",
+        "Standard_L32s"
       ],
       "metadata": {
         "description": "Size of the Elasticsearch Kibana node"
@@ -240,7 +244,11 @@
         "Standard_F2s",
         "Standard_F4s",
         "Standard_F8s",
-        "Standard_F16s"
+        "Standard_F16s",
+        "Standard_L4s",
+        "Standard_L8s",
+        "Standard_L16s",
+        "Standard_L32s"
       ],
       "metadata": {
         "description": "Size of the Elasticsearch data nodes"
@@ -362,7 +370,11 @@
         "Standard_F2s",
         "Standard_F4s",
         "Standard_F8s",
-        "Standard_F16s"
+        "Standard_F16s",
+        "Standard_L4s",
+        "Standard_L8s",
+        "Standard_L16s",
+        "Standard_L32s"
       ],
       "metadata": {
         "description": "Size of the Elasticsearch master nodes, if data nodes are not master eligible, 3 master nodes of this size will be provisioned"
@@ -433,7 +445,11 @@
         "Standard_F2s",
         "Standard_F4s",
         "Standard_F8s",
-        "Standard_F16s"
+        "Standard_F16s",
+        "Standard_L4s",
+        "Standard_L8s",
+        "Standard_L16s",
+        "Standard_L32s"
       ],
       "metadata": {
         "description": "Size of the Elasticsearch client nodes"
@@ -1038,6 +1054,22 @@
       },
       "Standard_F16s": {
         "dataDisks": 32,
+        "storageAccountType": "Premium_LRS"
+      },
+      "Standard_L4s": {
+        "dataDisks": 8,
+        "storageAccountType": "Premium_LRS"
+      },
+      "Standard_L8s": {
+        "dataDisks": 16,
+        "storageAccountType": "Premium_LRS"
+      },
+      "Standard_L16s": {
+        "dataDisks": 32,
+        "storageAccountType": "Premium_LRS"
+      },
+      "Standard_L32s": {
+        "dataDisks": 64,
         "storageAccountType": "Premium_LRS"
       }
     },

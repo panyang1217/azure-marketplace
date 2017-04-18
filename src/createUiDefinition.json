@@ -338,7 +338,11 @@
                     "Standard_F2s",
                     "Standard_F4s",
                     "Standard_F8s",
-                    "Standard_F16s"
+                    "Standard_F16s",
+                    "Standard_L4s",
+                    "Standard_L8s",
+                    "Standard_L16s",
+                    "Standard_L32s"
                   ]
                 },
                 "osPlatform": "Linux",
@@ -436,7 +440,11 @@
                     "Standard_F2s",
                     "Standard_F4s",
                     "Standard_F8s",
-                    "Standard_F16s"
+                    "Standard_F16s",
+                    "Standard_L4s",
+                    "Standard_L8s",
+                    "Standard_L16s",
+                    "Standard_L32s"
                   ]
                 },
                 "osPlatform": "Linux",
@@ -586,7 +594,11 @@
                     "Standard_F2s",
                     "Standard_F4s",
                     "Standard_F8s",
-                    "Standard_F16s"
+                    "Standard_F16s",
+                    "Standard_L4s",
+                    "Standard_L8s",
+                    "Standard_L16s",
+                    "Standard_L32s"
                   ]
                 },
                 "osPlatform": "Linux",
@@ -773,7 +785,11 @@
                 "Standard_F2s",
                 "Standard_F4s",
                 "Standard_F8s",
-                "Standard_F16s"
+                "Standard_F16s",
+                "Standard_L4s",
+                "Standard_L8s",
+                "Standard_L16s",
+                "Standard_L32s"
               ]
             },
             "osPlatform": "Linux",
