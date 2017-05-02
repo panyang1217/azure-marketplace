@@ -25,6 +25,15 @@
       "metadata": {
         "description": "The encryption settings for Azure Disk Encryption"
       }
+    },
+    "elasticTags": {
+      "type": "object",
+      "defaultValue": {
+        "provider": "648D2193-0CE0-4EFB-8A82-AF9792184FD9"
+      },
+      "metadata": {
+        "description": "A unique identifier to allow the Azure Infrastructure to understand the origin of resources deployed to Azure. You do not need to supply a value for this."
+      }
     }
   },
   "variables": {
@@ -78,6 +87,9 @@
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[concat(variables('namespace'), copyindex(), '-av-set')]",
       "location": "[parameters('vm').shared.location]",
+      "tags": {
+        "provider": "[toUpper(parameters('elasticTags').provider)]"
+      },
       "copy": {
         "name": "[concat(variables('namespace'),'av-loop')]",
         "count": "[variables('avSetCount')]"
@@ -92,6 +104,9 @@
       "name": "[concat(variables('storageAccountPrefix')[mod(copyIndex(),variables('storageAccountPrefixCount'))],variables('storageAccountPrefix')[div(copyIndex(),variables('storageAccountPrefixCount'))],variables('newStorageAccountNamePrefix'),copyIndex(1))]",
       "apiVersion": "2016-01-01",
       "location": "[parameters('vm').shared.location]",
+      "tags": {
+        "provider": "[toUpper(parameters('elasticTags').provider)]"
+      },
       "copy": {
         "name": "[concat(variables('namespace'),'storage-loop')]",
         "count": "[parameters('storageSettings').count]"
@@ -148,6 +163,9 @@
                 }
               ]
             }
+          },
+          "elasticTags": {
+            "value": "[parameters('elasticTags')]"
           }
         }
       }
@@ -160,6 +178,9 @@
         "[concat(variables('namespace'),'vm-creation-loop')]"
       ],
       "location": "[parameters('vm').shared.location]",
+      "tags": {
+        "provider": "[toUpper(parameters('elasticTags').provider)]"
+      },
       "copy": {
         "name": "[concat(variables('namespace'),'vm-encryption')]",
         "count": "[parameters('vm').count]"
@@ -224,6 +245,9 @@
                 }
               }
             }
+          },
+          "elasticTags": {
+            "value": "[parameters('elasticTags')]"
           }
         }
       }

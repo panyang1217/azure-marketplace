@@ -18,7 +18,7 @@
       "type": "object",
       "metadata": {
           "description": "The encryption settings for Azure Disk Encryption"
-	  }
+      }
     },
     "elasticTags": {
       "type": "object",
@@ -27,7 +27,7 @@
       },
       "metadata": {
         "description": "A unique identifier to allow the Azure Infrastructure to understand the origin of resources deployed to Azure. You do not need to supply a value for this."
-    }
+      }
     }
   },
   "variables": {},

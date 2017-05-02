@@ -25,6 +25,15 @@
       "metadata": {
         "description": "The encryption settings for Azure Disk Encryption"
       }
+    },
+    "elasticTags": {
+      "type": "object",
+      "defaultValue": {
+        "provider": "648D2193-0CE0-4EFB-8A82-AF9792184FD9"
+      },
+      "metadata": {
+        "description": "A unique identifier to allow the Azure Infrastructure to understand the origin of resources deployed to Azure. You do not need to supply a value for this."
+      }
     }
   },
   "variables": {
@@ -37,6 +46,9 @@
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[concat(variables('namespace'), copyindex(), '-av-set')]",
       "location": "[parameters('vm').shared.location]",
+      "tags": {
+        "provider": "[toUpper(parameters('elasticTags').provider)]"
+      },
       "copy": {
         "name": "[concat(variables('namespace'),'av-loop')]",
         "count": "[variables('avSetCount')]"
@@ -75,6 +87,9 @@
           },
           "availabilitySet": {
             "value": "[concat(variables('namespace'), mod(copyindex(),variables('avSetCount')), '-av-set')]"
+          },
+          "elasticTags": {
+            "value": "[parameters('elasticTags')]"
           }
         }
       }
@@ -87,6 +102,9 @@
         "[concat(variables('namespace'),'vm-creation-loop')]"
       ],
       "location": "[parameters('vm').shared.location]",
+      "tags": {
+        "provider": "[toUpper(parameters('elasticTags').provider)]"
+      },
       "copy": {
         "name": "[concat(variables('namespace'),'vm-encryption')]",
         "count": "[parameters('vm').count]"
@@ -151,6 +169,9 @@
                 }
               }
             }
+          },
+          "elasticTags": {
+            "value": "[parameters('elasticTags')]"
           }
         }
       }

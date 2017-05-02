@@ -29,27 +29,32 @@ function checks(cb) {
   }
 
   var filter = function(filename) {
-    return filename.endsWith(".json");
+    return filename.endsWith(".json") && !/\.\.\/src\/datanodes\/data-nodes-[1-9]*/.test(filename);
   }
 
   function resourcesHaveProviderTag(filename, content) {
-    var template = JSON.parse(content);
-    if (template.resources) {
-      template.resources.forEach(r => {
-        if (r.type !== "Microsoft.Resources/deployments") {
-            if (r.tags == undefined) {
-              errors.push("The resource '" + r.name + "' in template '" + filename + "' does not have tags");
-            }
-            else if (r.tags.provider == undefined) {
-              errors.push("The resource '" + r.name + "' in template '" + filename + "' is missing provider in tags");
-            }
-        }
-        else {
-          if (r.properties.parameters.elasticTags == undefined) {
-            errors.push("The resource '" + r.name + "' in template '" + filename + "' does not have an elasticTags parameter");
+    try {
+      var template = JSON.parse(content);
+      if (template.resources) {
+        template.resources.forEach(r => {
+          if (r.type !== "Microsoft.Resources/deployments") {
+              if (r.tags == undefined) {
+                errors.push("The resource '" + r.name + "' in template '" + filename + "' does not have tags");
+              }
+              else if (r.tags.provider == undefined) {
+                errors.push("The resource '" + r.name + "' in template '" + filename + "' is missing provider in tags");
+              }
           }
-        }
-      });
+          else {
+            if (r.properties.parameters.elasticTags == undefined) {
+              errors.push("The resource '" + r.name + "' in template '" + filename + "' does not have an elasticTags parameter");
+            }
+          }
+        });
+      }
+    }
+    catch (e) {
+      throw new Error("Error parsing " + filename + ". " +e.message, e.fileName, e.lineNumber);
     }
   }
 

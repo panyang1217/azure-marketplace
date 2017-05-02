@@ -2,48 +2,48 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-      "templateBaseUrl": {
-          "type": "string",
-          "metadata": {
-              "description": "The base url for templates"
-          }
-      },
-      "osSettings": {
-          "type": "object",
-          "metadata": {
-              "description" : "Operating system settings"
-          }
-      },
-      "commonVmSettings": {
-          "type": "object",
-          "metadata": {
-              "description" : "Shared VM settings"
-          }
-      },
-      "topologySettings": {
-        "type": "object",
-        "defaultValue": {
-          "dataNodesAreMasterEligible": "No"
-        },
+    "templateBaseUrl": {
+        "type": "string",
         "metadata": {
-          "description": "Aggregate for topology variable"
+            "description": "The base url for templates"
         }
-      },
-      "networkSettings": {
+    },
+    "osSettings": {
         "type": "object",
         "metadata": {
-          "description": "Network settings"
+            "description" : "Operating system settings"
         }
+    },
+    "commonVmSettings": {
+        "type": "object",
+        "metadata": {
+            "description" : "Shared VM settings"
+        }
+    },
+    "topologySettings": {
+      "type": "object",
+      "defaultValue": {
+        "dataNodesAreMasterEligible": "No"
       },
-      "diskEncryptionSettings": {
-          "type": "object",
-          "defaultValue": {
-            "keyEncryptionKey": "No",
-            "enabled": "No"
-          },
-          "metadata": {
-              "description": "The encryption settings for Azure Disk Encryption"
-		  }
+      "metadata": {
+        "description": "Aggregate for topology variable"
+      }
+    },
+    "networkSettings": {
+      "type": "object",
+      "metadata": {
+        "description": "Network settings"
+      }
+    },
+    "diskEncryptionSettings": {
+      "type": "object",
+      "defaultValue": {
+        "keyEncryptionKey": "No",
+        "enabled": "No"
+      },
+      "metadata": {
+          "description": "The encryption settings for Azure Disk Encryption"
+      }
     },
     "elasticTags": {
       "type": "object",
@@ -53,7 +53,7 @@
       "metadata": {
         "description": "A unique identifier to allow the Azure Infrastructure to understand the origin of resources deployed to Azure. You do not need to supply a value for this."
       }
-      }
+    }
   },
   "variables": {
     "keyEncryptionKeyOpts": {
